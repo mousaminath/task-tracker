@@ -1,0 +1,43 @@
+name: APEX CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  validate-apex:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Validate APEX split export
+        run: |
+          if [ ! -d "apex/f17152" ]; then
+            echo "❌ APEX export folder missing"
+            exit 1
+          fi
+
+          if [ -f "apex/f17152.sql" ]; then
+            echo "❌ Single-file export detected. Use split export only."
+            exit 1
+          fi
+
+          if [ ! -f "apex/f17152/application.sql" ]; then
+            echo "❌ application.sql missing"
+            exit 1
+          fi
+
+          echo "✅ APEX split export structure is valid"
+
+      - name: Package APEX artifact
+        run: |
+          cd apex
+          zip -r apex-app-${{ github.sha }}.zip f17152
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: apex-app
+          path: apex/apex-app-${{ github.sha }}.zip
