@@ -27,7 +27,7 @@ jobs:
             exit 1
           fi
 
-          if [ ! -f "apex/f17152/application.sql" ]; then
+          if [ ! -f "apex/f17152/application/create_application.sql" ]; then
             echo "❌ application.sql missing."
             exit 1
           fi
