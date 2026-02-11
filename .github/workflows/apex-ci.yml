@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  validate-apex:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
@@ -44,3 +44,32 @@ jobs:
         with:
           name: apex-app
           path: apex/apex-app-${{ github.sha }}.zip
+
+# -------------------
+# 2. CD job
+# -------------------
+  cd:
+    runs-on: ubuntu-latest
+    needs: ci   # ⬅️ IMPORTANT
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install SQLcl
+        run: |
+          curl -L https://download.oracle.com/otn_software/java/sqldeveloper/sqlcl-latest.zip -o sqlcl.zip
+          unzip sqlcl.zip
+          echo "$PWD/sqlcl/bin" >> $GITHUB_PATH
+
+      - name: Setup Oracle Wallet
+        run: |
+          mkdir wallet
+          echo "${{ secrets.ADB_WALLET_BASE64 }}" | base64 --decode > wallet.zip
+          unzip wallet.zip -d wallet
+          echo "TNS_ADMIN=$PWD/wallet" >> $GITHUB_ENV
+
+      # 👉 ADD YOUR STEP HERE
+      - name: Run DB scripts
+        run: |
+          sql ${{ secrets.ADB_USERNAME }}/${{ secrets.ADB_PASSWORD }}@${{ secrets.ADB_SERVICE }} @db/V001_create_tables.sql
