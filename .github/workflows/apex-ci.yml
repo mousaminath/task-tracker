@@ -72,12 +72,16 @@ jobs:
       # 👉 ADD YOUR STEP HERE
       - name: Run DB scripts
         run: |
-          sql /nolog <<EOF
-          connect ${{ secrets.ADB_USERNAME }}@"${{ secrets.ADB_SERVICE }}" password="${{ secrets.ADB_PASSWORD }}"
+          sql -L -nolog <<EOF
+          define DB_USER='${{ secrets.ADB_USERNAME }}'
+          define DB_PASS='${{ secrets.ADB_PASSWORD }}'
+          define DB_SVC='${{ secrets.ADB_SERVICE }}'
+
+          connect &DB_USER/&DB_PASS@&DB_SVC
           @db/V001_create_tables.sql
       - name: Deploy APEX app
         run: |
-          sql /nolog <<EOF
+          sql -L -nolog <<EOF
           connect ${{ secrets.ADB_USERNAME }}@"${{ secrets.ADB_SERVICE }}" password="${{ secrets.ADB_PASSWORD }}"
           begin
            apex_application_install.set_workspace('WKSP_DEVWS');
