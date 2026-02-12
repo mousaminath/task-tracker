@@ -79,8 +79,9 @@ jobs:
           begin
            apex_application_install.set_workspace('WKSP_DEVWS');
            apex_application_install.set_schema('DEV_ADMIN');
-           apex_application_install.set_application_id(500);
-           apex_application_install.set_application_alias('TASK_TRACKER_DUP');
+           apex_application_install.set_application_id(100);
+           apex_application_install.set_application_alias('TASK_TRACKER');
+           apex_application_install.set_replace(true);
           end;
           /
           @apex/f100/install.sql
