@@ -65,7 +65,7 @@ jobs:
       - name: Setup Oracle Wallet
         run: |
           mkdir wallet
-          echo "${{ secrets.ADB_WALLET_BASE64 }}" | base64 --decode > wallet.zip
+          echo "${{ secrets.ADB_TNS_ADMIN }}" | base64 --decode > wallet.zip
           unzip wallet.zip -d wallet
           echo "TNS_ADMIN=$PWD/wallet" >> $GITHUB_ENV
 
