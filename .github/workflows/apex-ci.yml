@@ -72,10 +72,13 @@ jobs:
       # 👉 ADD YOUR STEP HERE
       - name: Run DB scripts
         run: |
-          sql "${{ secrets.ADB_USERNAME }}/${{ secrets.ADB_PASSWORD }}@${{ secrets.ADB_SERVICE }}" @db/V001_create_tables.sql
+          sql /nolog <<EOF
+          connect ${{ secrets.ADB_USERNAME }}@"${{ secrets.ADB_SERVICE }}" password="${{ secrets.ADB_PASSWORD }}"
+          @db/V001_create_tables.sql
       - name: Deploy APEX app
         run: |
-          sql ${{ secrets.ADB_USERNAME }}/${{ secrets.ADB_PASSWORD }}@${{ secrets.ADB_SERVICE }} <<EOF
+          sql /nolog <<EOF
+          connect ${{ secrets.ADB_USERNAME }}@"${{ secrets.ADB_SERVICE }}" password="${{ secrets.ADB_PASSWORD }}"
           begin
            apex_application_install.set_workspace('WKSP_DEVWS');
            apex_application_install.set_schema('DEV_ADMIN');
