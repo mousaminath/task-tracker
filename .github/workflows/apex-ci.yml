@@ -83,5 +83,5 @@ jobs:
            apex_application_install.set_application_alias('TASK_TRACKER_DUP');
           end;
           /
-          @apex/f100/application/create_application.sql
+          @apex/f100/install.sql
           EOF
