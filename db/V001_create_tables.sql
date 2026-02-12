@@ -10,3 +10,6 @@ CREATE TABLE tt_tasks (
 
 INSERT INTO tt_tasks (task_name, status) VALUES ('Create APEX app', 'OPEN');
 COMMIT;
+
+alter table tt_tasks
+add description varchar2(100) null;
