@@ -1,2 +1,2 @@
 alter table tt_tasks
-add description varchar2(100) null;
+add reason varchar2(100) null;
