@@ -80,10 +80,18 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_display_order=>2
 ,p_column_identifier=>'B'
 ,p_column_label=>'Task Name'
+,p_allow_sorting=>'N'
+,p_allow_ctrl_breaks=>'N'
+,p_allow_aggregations=>'N'
+,p_allow_computations=>'N'
+,p_allow_charting=>'N'
+,p_allow_group_by=>'N'
+,p_allow_pivot=>'N'
 ,p_column_type=>'STRING'
+,p_display_text_as=>'RICH_TEXT'
 ,p_heading_alignment=>'LEFT'
-,p_tz_dependent=>'N'
-,p_use_as_row_header=>'N'
+,p_rich_text_format=>'MARKDOWN'
+,p_rpt_show_filter_lov=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(8751729429478847)
