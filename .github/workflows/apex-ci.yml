@@ -86,7 +86,9 @@ jobs:
                         );
 
             -- 2. Set APEX context
-            apex_util.set_security_group_id(l_workspace_id);
+            apex_util.set_security_group_id(
+              apex_util.find_security_group_id('TEST_ADMIN')
+            );
 
             -- 3. Create APEX session (THIS IS THE MISSING PIECE)
             apex_session.create_session(
