@@ -76,20 +76,30 @@ jobs:
       - name: Deploy APEX app
         run: |
           sql ${{ secrets.TEST_ADB_USERNAME }}/${{ secrets.TEST_ADB_PASSWORD }}@${{ secrets.TEST_ADB_SERVICE }} <<EOF
+          set define off
           declare
             l_workspace_id number;
           begin
+            -- 1. Resolve workspace
             l_workspace_id := apex_util.find_security_group_id(
                           p_workspace => 'TEST_ADMIN'
                         );
 
+            -- 2. Set APEX context
             apex_util.set_security_group_id(l_workspace_id);
 
+            -- 3. Create APEX session (THIS IS THE MISSING PIECE)
+            apex_session.create_session(
+              p_app_id   => 0,
+              p_page_id  => 0,
+              p_username => 'APEX_CI'
+            );
+
+            -- 4. Prepare install
             apex_application_install.set_workspace_id(l_workspace_id);
             apex_application_install.set_schema('TEST_ADMIN');
             apex_application_install.set_application_id(100);
             apex_application_install.set_application_alias('TASK_TRACKER');
-            apex_application_install.set_replace(true);
           end;
           /
           @apex/f100/install.sql
