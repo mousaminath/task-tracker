@@ -76,12 +76,20 @@ jobs:
       - name: Deploy APEX app
         run: |
           sql ${{ secrets.TEST_ADB_USERNAME }}/${{ secrets.TEST_ADB_PASSWORD }}@${{ secrets.TEST_ADB_SERVICE }} <<EOF
+          declare
+            l_workspace_id number;
           begin
-           apex_application_install.set_workspace('TEST_ADMIN');
-           apex_application_install.set_schema('TEST_ADMIN');
-           apex_application_install.set_application_id(100);
-           apex_application_install.set_application_alias('TASK_TRACKER');
-           apex_application_install.set_replace(true);
+            l_workspace_id := apex_util.find_security_group_id(
+                          p_workspace => 'WKSP_TESTWS'
+                        );
+
+            apex_util.set_security_group_id(l_workspace_id);
+
+            apex_application_install.set_workspace_id(l_workspace_id);
+            apex_application_install.set_schema('TEST_ADMIN');
+            apex_application_install.set_application_id(100);
+            apex_application_install.set_application_alias('TASK_TRACKER');
+            apex_application_install.set_replace(true);
           end;
           /
           @apex/f100/install.sql
