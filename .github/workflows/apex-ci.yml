@@ -77,6 +77,7 @@ jobs:
         run: |
           sql ${{ secrets.TEST_ADB_USERNAME }}/${{ secrets.TEST_ADB_PASSWORD }}@${{ secrets.TEST_ADB_SERVICE }} <<EOF
           set define off
+          set serveroutput on
 
           -- Set workspace security context
           begin
@@ -98,7 +99,6 @@ jobs:
           -- Import application
           @apex/f100/install.sql
 
+          exit
           EOF
-          /
-          @apex/f100/install.sql
-          EOF
+
