@@ -80,7 +80,10 @@ jobs:
           set serveroutput on
 
           -- Set workspace security context
-          apex_util.set_security_group_id(8728731210856376);
+          begin
+            apex_util.set_security_group_id(8728731210856376);
+          end;
+          /
 
           --Configure application install
           begin
