@@ -65,24 +65,40 @@ jobs:
       - name: Setup Oracle Wallet
         run: |
           mkdir wallet
-          echo "${{ secrets.ADB_TNS_ADMIN }}" | base64 --decode > wallet.zip
+          echo "${{ secrets.TEST_ADB_TNS_ADMIN }}" | base64 --decode > wallet.zip
           unzip wallet.zip -d wallet
           echo "TNS_ADMIN=$PWD/wallet" >> $GITHUB_ENV
 
       # 👉 ADD YOUR STEP HERE
       - name: Run DB scripts
         run: |
-          sql ${{ secrets.ADB_OWNER_USERNAME }}/${{ secrets.ADB_OWNER_PASSWORD }}@${{ secrets.ADB_SERVICE }} @db/V002_db_script.sql
+          sql ${{ secrets.TEST_ADB_OWNER_USERNAME }}/${{ secrets.TEST_ADB_OWNER_PASSWORD }}@${{ secrets.TEST_ADB_SERVICE }} @db/V001_create_tables.sql @db/V002_db_script.sql
       - name: Deploy APEX app
         run: |
-          sql ${{ secrets.ADB_USERNAME }}/${{ secrets.ADB_PASSWORD }}@${{ secrets.ADB_SERVICE }} <<EOF
+          sql ${{ secrets.TEST_ADB_OWNER_USERNAME }}/${{ secrets.TEST_ADB_OWNER_PASSWORD }}@${{ secrets.TEST_ADB_SERVICE }} <<EOF
+          set define off
+          set sqlblanklines on
+
+          -- Set workspace context (now VALID)
           begin
-           apex_application_install.set_workspace('WKSP_DEVWS');
-           apex_application_install.set_schema('DEV_ADMIN');
-           apex_application_install.set_application_id(100);
-           apex_application_install.set_application_alias('TASK_TRACKER');
-           apex_application_install.set_replace(true);
+            apex_util.set_security_group_id(
+            apex_util.find_security_group_id('TEST_ADMIN')
+            );
           end;
           /
+
+          --Configure application install
+          begin
+            apex_application_install.set_workspace('TEST_ADMIN');
+            apex_application_install.set_schema('TEST_ADMIN');
+            apex_application_install.set_application_id(100);
+            apex_application_install.set_application_alias('TASK_TRACKER');
+          end;
+          /
+
+          -- Import application
           @apex/f100/install.sql
+
+          exit
           EOF
+
