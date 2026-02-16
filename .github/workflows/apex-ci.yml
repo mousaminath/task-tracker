@@ -72,7 +72,7 @@ jobs:
       # 👉 ADD YOUR STEP HERE
       - name: Run DB scripts
         run: |
-          sql ${{ secrets.TEST_ADB_OWNER_USERNAME }}/${{ secrets.TEST_ADB_OWNER_PASSWORD }}@${{ secrets.TEST_ADB_SERVICE }} @db/V001_create_tables.sql @db/V002_db_script.sql
+          sql ${{ secrets.TEST_ADB_OWNER_USERNAME }}/${{ secrets.TEST_ADB_OWNER_PASSWORD }}@${{ secrets.TEST_ADB_SERVICE }} @db/V003_db_script.sql
       - name: Deploy APEX app
         run: |
           sql ${{ secrets.TEST_ADB_OWNER_USERNAME }}/${{ secrets.TEST_ADB_OWNER_PASSWORD }}@${{ secrets.TEST_ADB_SERVICE }} <<EOF
