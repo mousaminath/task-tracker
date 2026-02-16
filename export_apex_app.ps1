@@ -3,7 +3,7 @@ $APP_ID      = 100
 $SQLCL       = "C:\Oracle\sqlcl\bin\sql.exe"
 $DB_CONN     = "apex_ci/Ringroad_12345@yty2rlbmita3nlpb_high"
 
-$ZIP_DIR     = "D:\task-tracker\_export_zip"
+$ZIP_DIR     = "D:\apex_export_automate\_export_zip"
 $GIT_TARGET  = "D:\task-tracker\apex\f100"
 # ==================
 

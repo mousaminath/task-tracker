@@ -138,6 +138,18 @@ wwv_flow_imp_page.create_page_plug(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(9530898123841702)
+,p_plug_name=>'Report Details'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>4072358936313175081
+,p_plug_display_sequence=>30
+,p_location=>null
+,p_plug_source=>'This is the report region'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
 wwv_flow_imp.component_end;
 end;
 /
