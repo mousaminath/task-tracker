@@ -94,6 +94,22 @@ if ($commit -eq "y") {
     Write-Host "Changes committed successfully."
 }
 
+# Ask: push
+do {
+    $push = Read-Host "Do you want to push the commit to remote? (y/n)"
+    $push = $push.Trim().ToLower()
+} until ($push -in @("y","n"))
+
+if ($push -eq "y") {
+    Write-Host ""
+    git push
+    Write-Host ""
+    Write-Host "Push completed."
+} else {
+    Write-Host ""
+    Write-Host "Push skipped."
+}
+
 Write-Host ""
 Write-Host "Done."
 # ==========================
