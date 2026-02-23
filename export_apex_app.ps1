@@ -102,14 +102,21 @@ do {
 
 if ($push -eq "y") {
     Write-Host ""
+    Write-Host "Pushing changes to remote..."
+
     git push
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host ""
+        Write-Error "Git push failed."
+        Write-Host "There may be merge conflicts or remote changes."
+        Write-Host "Please resolve the issue manually, then push again."
+        exit 1
+    }
+
     Write-Host ""
-    Write-Host "Push completed."
+    Write-Host "Push completed successfully."
 } else {
     Write-Host ""
     Write-Host "Push skipped."
 }
 
-Write-Host ""
-Write-Host "Done."
-# ==========================
