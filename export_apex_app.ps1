@@ -7,6 +7,12 @@ $ZIP_DIR     = "D:\apex_export_automate\_export_zip"
 $GIT_TARGET  = "D:\task-tracker\apex\f100"
 # ==================
 
+do {
+    $doExport = Read-Host "Do you want to export the application? (y/n)"
+    $doExport = $doExport.Trim().ToLower()
+} until ($doExport -in @("y","n"))
+
+if ($doExport -eq "y") {
 New-Item -ItemType Directory -Force -Path $ZIP_DIR | Out-Null
 New-Item -ItemType Directory -Force -Path $GIT_TARGET | Out-Null
 
@@ -38,6 +44,12 @@ Copy-Item `
 Write-Host ""
 Write-Host "Export complete."
 Write-Host ""
+
+} else {
+    Write-Host ""
+    Write-Host "Skipping APEX export. Proceeding to Git status check..."
+    Write-Host ""
+}
 
 # Check for changes
 $gitChanges = git status --porcelain
