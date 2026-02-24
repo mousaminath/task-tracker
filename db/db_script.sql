@@ -1,2 +1,2 @@
 alter table tt_tasks
-drop column description;
+add description varchar2(100);
